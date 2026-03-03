@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manisha Takale — Data Quality & Governance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --ink:       #111318;
+  --ink-soft:  #3d4049;
+  --ink-mute:  #7a7e8a;
+  --rule:      #e4e5ea;
+  --paper:     #f8f8fc;
+  --paper2:    #dfdff7;
+  --paper3:    #e8e8f2;
+  --paper4:    #e2ecf4;
+  --accent:    #2445a0;
+  --accent2:   #1a3478;
+  --accent-lt: #eaedfa;
+  --accent-md: #c5ccf0;
+  --gold:      #c49a3c;
+  --gold-lt:   #fdf6e3;
+  --green:     #22c55e;
+  --serif:     'Playfair Display', Georgia, serif;
+  --sans:      'Outfit', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --r:         4px;
+  --sidebar:   272px;
+}
+
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+  display:flex;
+}
+::selection { background:var(--accent-lt); color:var(--accent); }
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:2px; }
+
+/* ══════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar);
+  background: #fff;
+  border-right: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-self: flex-start;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sb-profile {
+  padding: 2rem 1.8rem 1.6rem;
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+.sb-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #6c5ce7 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: #fff;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(36,69,160,0.18);
+}
+.sb-name {
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 700;
+  color: var(--ink); line-height: 1.2; margin-bottom: 0.2rem;
+}
+.sb-name span { color: var(--accent); }
+.sb-role {
+  font-size: 0.68rem; color: var(--ink-mute);
+  letter-spacing: 0.07em; text-transform: uppercase;
+  font-weight: 500; line-height: 1.6;
+}
+.sb-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.85rem;
+  font-family: var(--mono); font-size: 0.57rem; letter-spacing: 0.08em;
+  color: #166534; background: #dcfce7;
+  border: 1px solid #86efac; padding: 0.26rem 0.68rem; border-radius: 2rem;
+}
+.sb-badge::before {
+  content:''; width:6px; height:6px; border-radius:50%;
+  background: var(--green); animation: pulse 2s infinite;
+}
+
+.sb-nav { flex: 1; padding: 1rem 0; }
+.sb-section {
+  font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.2em;
+  color: var(--ink-mute); text-transform: uppercase;
+  padding: 0 1.8rem; margin: 0.9rem 0 0.35rem;
+}
+.sb-section:first-child { margin-top: 0; }
+.sb-link {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.55rem 1.8rem;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--ink-soft); text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.sb-link .n {
+  font-family: var(--mono); font-size: 0.54rem;
+  color: var(--ink-mute); min-width: 1.4rem;
+}
+.sb-link:hover { color: var(--ink); background: var(--paper); }
+.sb-link.active {
+  color: var(--accent); border-left-color: var(--accent);
+  background: var(--accent-lt);
+}
+.sb-link.active .n { color: var(--accent); }
+
+.sb-footer {
+  padding: 1.2rem 1.8rem;
+  border-top: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+.sb-socials { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+.sb-soc {
+  font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.06em;
+  color: var(--ink-mute); text-decoration: none;
+  padding: 0.26rem 0.58rem; border: 1px solid var(--rule); border-radius: var(--r);
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.sb-soc:hover {
+  color: var(--accent); border-color: var(--accent-md); background: var(--accent-lt);
+}
+
+/* ══════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════ */
+.main { flex: 1; min-width: 0; }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--paper);
+  position: relative; overflow: hidden;
+}
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(36,69,160,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 0% 100%, rgba(196,154,60,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* left */
+.hero-l {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 5.5rem 3.5rem;
+  position: relative; z-index: 1;
+}
+.hero-l::after {
+  content: ''; position: absolute; right: 0; top: 15%; bottom: 15%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--rule) 30%, var(--rule) 70%, transparent);
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.8rem;
+  opacity: 0; animation: up 0.7s 0.2s forwards;
+}
+.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--accent); flex-shrink:0; }
+h1.name {
+  font-family: var(--serif); font-size: clamp(3rem,5.5vw,4.8rem);
+  font-weight: 400; line-height: 1.05; color: var(--ink); margin-bottom: 0.15em;
+  opacity: 0; animation: up 0.7s 0.35s forwards;
+}
+h1.name em { font-style: italic; color: var(--accent); }
+.hero-role {
+  font-family: var(--serif); font-size: clamp(1rem,1.7vw,1.3rem);
+  font-weight: 400; color: var(--ink-soft); margin-bottom: 2rem;
+  opacity: 0; animation: up 0.7s 0.5s forwards;
+}
+.hero-desc {
+  font-size: 0.93rem; color: var(--ink-soft); line-height: 1.9;
+  max-width: 440px; margin-bottom: 2.5rem;
+  opacity: 0; animation: up 0.7s 0.65s forwards;
+}
+.hero-btns {
+  display: flex; gap: 1rem; align-items: center;
+  opacity: 0; animation: up 0.7s 0.8s forwards;
+}
+.btn-fill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.7rem; background: var(--accent); color: #fff;
+  font-family: var(--sans); font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none;
+  border-radius: var(--r); transition: background 0.2s, transform 0.15s;
+}
+.btn-fill:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-ghost2 {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--ink-soft); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  border-bottom: 1px solid var(--rule); padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-ghost2:hover { color: var(--accent); border-color: var(--accent); }
+
+/* right */
+.hero-r {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 5.5rem 3.5rem; z-index: 1;
+  background: var(--paper4);
+  opacity: 0; animation: fade 1s 0.9s forwards;
+}
+
+/* portrait card */
+.hero-portrait {
+  width: 100%; max-width: 220px;
+  margin: 0 auto 2.2rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent-lt) 0%, var(--paper2) 100%);
+  border: 1px solid var(--accent-md);
+  padding: 2rem 1.5rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.55rem;
+  position: relative; overflow: hidden;
+}
+.hero-portrait::before {
+  content: 'MT';
+  font-family: var(--serif); font-size: 4.5rem; font-weight: 700;
+  color: var(--accent); opacity: 0.08;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  user-select: none;
+}
+.portrait-label {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em;
+  color: var(--accent); background: #fff; border: 1px solid var(--accent-md);
+  padding: 0.26rem 0.75rem; border-radius: 2rem;
+  position: relative; z-index: 1;
+}
+.portrait-name {
+  font-family: var(--serif); font-size: 1.35rem; font-weight: 700;
+  color: var(--accent); position: relative; z-index: 1; text-align: center;
+  line-height: 1.2;
+}
+
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.8rem; }
+.stat-box {
+  padding: 1.3rem 1.2rem; background: #fff;
+  border-radius: var(--r); border: 1px solid var(--rule);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stat-box:hover { border-color: var(--accent-md); box-shadow: 0 4px 14px rgba(36,69,160,0.08); }
+.stat-n { font-family:var(--serif); font-size:2.4rem; font-weight:700; color:var(--accent); line-height:1; margin-bottom:0.2rem; }
+.stat-l { font-size:0.68rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-mute); }
+
+.tag-cloud { display:flex; flex-wrap:wrap; gap:0.45rem; }
+.htag {
+  font-family:var(--mono); font-size:0.64rem; letter-spacing:0.04em;
+  padding:0.28rem 0.72rem; background:var(--accent-lt);
+  color:var(--accent); border-radius:2rem; border:1px solid var(--accent-md);
+}
+
+/* ══════════════════════════════════════════
+   SECTION SHELL
+══════════════════════════════════════════ */
+.sec { padding: 5.5rem 4rem; border-bottom: 1px solid var(--rule); }
+.sec.alt { background: var(--paper2); }
+.sec.dark { background: var(--ink); }
+.sec-inner { max-width: 1000px; margin: 0 auto; }
+.sec-hd { display:flex; align-items:center; gap:1.2rem; margin-bottom:3.5rem; }
+.sec-num { font-family:var(--mono); font-size:0.62rem; color:var(--ink-mute); letter-spacing:0.15em; flex-shrink:0; }
+.sec-title { font-family:var(--serif); font-size:clamp(1.7rem,3vw,2.4rem); font-weight:700; color:var(--ink); flex-shrink:0; }
+.sec-title.inv { color:#fff; }
+.sec-line { flex:1; height:1px; background:var(--rule); }
+.sec-line.inv { background:rgba(255,255,255,0.15); }
+.sec-num.inv { color:rgba(255,255,255,0.3); }
+
+/* ══════════════════════════════════════════
+   EXPERTISE
+══════════════════════════════════════════ */
+.exp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+.exp-card {
+  padding:2.2rem; border:1px solid var(--rule); border-radius:var(--r);
+  background:#fff; position:relative; overflow:hidden;
+  transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.exp-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--accent), var(--accent-md));
+  transform:scaleX(0); transform-origin:left; transition:transform 0.3s;
+}
+.exp-card:hover { border-color:var(--accent-md); transform:translateY(-3px); box-shadow:0 8px 30px rgba(36,69,160,0.1); }
+.exp-card:hover::before { transform:scaleX(1); }
+.exp-n { font-family:var(--mono); font-size:0.6rem; color:var(--ink-mute); letter-spacing:0.15em; display:block; margin-bottom:1rem; }
+.exp-name { font-family:var(--serif); font-size:1.35rem; font-weight:700; color:var(--ink); margin-bottom:0.7rem; line-height:1.25; }
+.exp-body { font-size:0.85rem; color:var(--ink-soft); line-height:1.8; margin-bottom:1.4rem; }
+.chip-row { display:flex; flex-wrap:wrap; gap:0.4rem; }
+.chip { font-family:var(--mono); font-size:0.6rem; color:var(--ink-mute); border:1px solid var(--rule); padding:0.2rem 0.55rem; border-radius:2px; }
+
+/* ══════════════════════════════════════════
+   PROJECTS
+══════════════════════════════════════════ */
+.proj-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.proj-card {
+  border:1px solid var(--accent-md); border-radius:8px;
+  background:#fff; overflow:hidden;
+  box-shadow:0 4px 20px rgba(36,69,160,0.06);
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.proj-card:hover { border-color:var(--accent); box-shadow:0 8px 28px rgba(36,69,160,0.1); }
+.proj-card-header { padding:1.6rem 2rem; transition:background 0.2s; }
+.proj-card-header:hover { background:var(--accent-lt); }
+.proj-domain { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:0.35rem; }
+.proj-name { font-family:var(--serif); font-size:1.3rem; font-weight:700; color:var(--ink); margin-bottom:0.25rem; line-height:1.2; }
+.proj-org { font-size:0.75rem; color:var(--ink-mute); }
+.proj-card-body { padding:1.8rem 2rem; border-top:1px solid var(--rule); }
+.p-q { font-family:var(--serif); font-size:0.98rem; font-style:italic; color:var(--ink-soft); margin-bottom:0.9rem; line-height:1.6; }
+.p-body { font-size:0.86rem; color:var(--ink-soft); line-height:1.85; margin-bottom:1.1rem; }
+.p-pills { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.9rem; }
+.pill { font-size:0.73rem; font-weight:500; color:var(--accent); background:var(--accent-lt); padding:0.25rem 0.75rem; border-radius:2rem; border:1px solid var(--accent-md); }
+.p-tools { font-family:var(--mono); font-size:0.63rem; color:var(--ink-mute); }
+
+/* ══════════════════════════════════════════
+   FRAMEWORK
+══════════════════════════════════════════ */
+.fw-banner {
+  display:grid; grid-template-columns:1fr 1fr;
+  background:linear-gradient(135deg, var(--ink) 0%, #1c2340 100%);
+  border-radius:var(--r); overflow:hidden; margin-bottom:1.5rem;
+}
+.fw-bl { padding:3rem; }
+.fw-br { padding:3rem; background:rgba(255,255,255,0.03); border-left:1px solid rgba(255,255,255,0.08); }
+.fw-live {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3);
+  padding:0.3rem 0.8rem; border-radius:2rem;
+  font-family:var(--mono); font-size:0.6rem; letter-spacing:0.1em;
+  color:rgba(255,255,255,0.8); margin-bottom:1.2rem;
+}
+.fw-live::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+.fw-title { font-family:var(--serif); font-size:clamp(1.3rem,2.2vw,1.9rem); font-weight:700; color:#fff; line-height:1.2; margin-bottom:0.8rem; }
+.fw-sub { font-size:0.84rem; color:rgba(255,255,255,0.58); line-height:1.8; margin-bottom:1.4rem; }
+.fw-badges { display:flex; flex-wrap:wrap; gap:0.5rem; }
+.fw-badge { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.06em; padding:0.25rem 0.7rem; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); border-radius:2px; }
+.arch-lbl { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:1.2rem; }
+.arch-flow { display:flex; flex-direction:column; gap:0.7rem; }
+.arch-row { display:flex; align-items:center; flex-wrap:wrap; gap:0.4rem; }
+.anode { font-family:var(--mono); font-size:0.68rem; color:rgba(255,255,255,0.82); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); padding:0.32rem 0.75rem; border-radius:2px; }
+.anode.ml { background:rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.3); color:#86efac; }
+.aarr { color:rgba(255,255,255,0.22); font-size:0.8rem; }
+.asep { font-family:var(--mono); font-size:0.57rem; color:rgba(255,255,255,0.18); letter-spacing:0.1em; padding-left:0.3rem; }
+
+.fw-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; }
+.fw-card { padding:1.8rem; background:#fff; border:1px solid var(--rule); border-radius:var(--r); transition:border-color 0.2s, box-shadow 0.2s; }
+.fw-card:hover { border-color:var(--accent-md); box-shadow:0 4px 16px rgba(36,69,160,0.08); }
+.fw-ctag { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.12em; color:var(--accent); display:block; margin-bottom:0.7rem; }
+.fw-cname { font-family:var(--serif); font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:0.55rem; line-height:1.3; }
+.fw-cbody { font-size:0.79rem; color:var(--ink-soft); line-height:1.75; margin-bottom:0.8rem; }
+.fw-clist { list-style:none; }
+.fw-clist li { font-family:var(--mono); font-size:0.61rem; color:var(--ink-mute); padding:0.18rem 0; border-bottom:1px solid var(--paper3); }
+.fw-clist li:last-child { border-bottom:none; }
+
+.fw-maps { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+.fw-map { padding:2rem; background:#fff; border:1px solid var(--rule); border-radius:var(--r); }
+.fw-mhd { display:flex; align-items:center; gap:0.8rem; margin-bottom:1.3rem; }
+.fw-mico { width:32px; height:32px; background:var(--accent); border-radius:var(--r); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:0.55rem; color:#fff; letter-spacing:0.03em; flex-shrink:0; }
+.fw-mname { font-family:var(--serif); font-size:1rem; font-weight:700; color:var(--ink); }
+.fw-tbl { width:100%; border-collapse:collapse; }
+.fw-tbl th { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:var(--ink-mute); text-align:left; padding:0.4rem 0; border-bottom:1px solid var(--rule); }
+.fw-tbl td { font-size:0.78rem; color:var(--ink-soft); padding:0.45rem 0; border-bottom:1px solid var(--paper3); vertical-align:top; }
+.fw-tbl td:first-child { font-family:var(--mono); font-size:0.63rem; color:var(--accent); padding-right:1rem; white-space:nowrap; }
+.fw-tbl tr:last-child td { border-bottom:none; }
+
+.fw-gh {
+  display:flex; align-items:center; justify-content:space-between; gap:2rem;
+  padding:2rem 2.5rem;
+  background:linear-gradient(135deg, var(--ink), #1c2340);
+  border-radius:var(--r); margin-bottom:1rem;
+}
+.fw-gh-lbl { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.15em; color:rgba(255,255,255,0.35); margin-bottom:0.3rem; }
+.fw-gh-repo { font-family:var(--mono); font-size:0.9rem; color:#fff; }
+.fw-gh-desc { font-size:0.79rem; color:rgba(255,255,255,0.42); margin-top:0.2rem; }
+.btn-gh { display:inline-flex; align-items:center; gap:0.6rem; padding:0.7rem 1.6rem; background:#fff; color:var(--ink); font-size:0.73rem; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; text-decoration:none; border-radius:var(--r); white-space:nowrap; transition:background 0.2s; flex-shrink:0; }
+.btn-gh:hover { background:var(--accent-lt); color:var(--accent); }
+.fw-stack { display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; padding:1rem 0; }
+.fw-slbl { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.12em; color:var(--ink-mute); margin-right:0.3rem; }
+.schip { font-family:var(--mono); font-size:0.6rem; color:var(--ink-soft); background:var(--paper2); border:1px solid var(--rule); padding:0.2rem 0.55rem; border-radius:2px; }
+
+/* ══════════════════════════════════════════
+   APPROACH
+══════════════════════════════════════════ */
+.think-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.think-cell { padding:2rem; background:#fff; border:1px solid var(--rule); border-radius:var(--r); position:relative; overflow:hidden; transition:border-color 0.2s, box-shadow 0.2s; }
+.think-cell:hover { border-color:var(--accent-md); box-shadow:0 4px 16px rgba(36,69,160,0.08); }
+.think-n { position:absolute; top:1rem; right:1.5rem; font-family:var(--serif); font-size:3rem; font-weight:700; color:var(--accent-lt); line-height:1; }
+.think-name { font-family:var(--serif); font-size:1.15rem; font-weight:700; color:var(--ink); margin-bottom:0.6rem; }
+.think-body { font-size:0.84rem; color:var(--ink-soft); line-height:1.8; }
+.quote-box { margin-top:1.5rem; padding:1.5rem 2rem; border-left:3px solid var(--accent); background:var(--accent-lt); border-radius:0 var(--r) var(--r) 0; }
+.quote-box p { font-family:var(--serif); font-size:1.1rem; font-style:italic; font-weight:400; color:var(--ink); line-height:1.6; }
+.quote-box cite { display:block; margin-top:0.6rem; font-family:var(--mono); font-size:0.62rem; color:var(--ink-mute); font-style:normal; letter-spacing:0.07em; }
+
+/* ══════════════════════════════════════════
+   LEADERSHIP
+══════════════════════════════════════════ */
+.lead-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin-bottom:1.5rem; }
+.lead-card { padding:1.8rem; border:1px solid var(--rule); border-radius:var(--r); background:#fff; transition:border-color 0.2s, transform 0.2s; }
+.lead-card:hover { border-color:var(--accent-md); transform:translateY(-2px); }
+.lead-ico { font-size:1.3rem; margin-bottom:0.8rem; color:var(--accent); }
+.lead-name { font-family:var(--serif); font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:0.5rem; }
+.lead-body { font-size:0.82rem; color:var(--ink-soft); line-height:1.8; }
+.impact-strip { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--rule); border-radius:var(--r); overflow:hidden; }
+.ic { padding:1.6rem 1.2rem; text-align:center; border-right:1px solid var(--rule); background:#fff; transition:background 0.2s; }
+.ic:last-child { border-right:none; }
+.ic:hover { background:var(--accent-lt); }
+.ic-n { font-family:var(--serif); font-size:2.2rem; font-weight:700; color:var(--accent); display:block; margin-bottom:0.25rem; }
+.ic-l { font-size:0.7rem; color:var(--ink-mute); line-height:1.5; }
+
+/* ══════════════════════════════════════════
+   JOURNEY
+══════════════════════════════════════════ */
+.tl { position:relative; padding-left:2rem; }
+.tl::before { content:''; position:absolute; left:0; top:0.5rem; bottom:0; width:1px; background:linear-gradient(to bottom, var(--accent), var(--rule)); }
+.tl-item { position:relative; padding-left:1.5rem; margin-bottom:2.5rem; }
+.tl-item:last-child { margin-bottom:0; }
+.tl-item::before { content:''; position:absolute; left:-2rem; top:0.55rem; width:8px; height:8px; border-radius:50%; background:var(--accent); border:2px solid var(--paper); box-shadow:0 0 0 2px var(--accent); }
+.tl-period { font-family:var(--mono); font-size:0.63rem; letter-spacing:0.1em; color:var(--accent); margin-bottom:0.2rem; }
+.tl-role { font-family:var(--serif); font-size:1.1rem; font-weight:700; color:var(--ink); margin-bottom:0.15rem; }
+.tl-org { font-size:0.79rem; color:var(--ink-mute); margin-bottom:0.45rem; }
+.tl-note { font-size:0.83rem; color:var(--ink-soft); line-height:1.75; max-width:540px; }
+
+/* ══════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════ */
+.contact-inner { display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-top:2.5rem; }
+.avail { display:inline-flex; align-items:center; gap:0.5rem; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.25); padding:0.4rem 0.9rem; border-radius:2rem; font-family:var(--mono); font-size:0.63rem; letter-spacing:0.09em; color:#fff; margin-bottom:1.4rem; }
+.avail::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+.ct-tagline { font-family:var(--serif); font-size:1.45rem; font-weight:400; font-style:italic; color:rgba(255,255,255,0.9); line-height:1.5; margin-bottom:1.3rem; }
+.ct-copy { font-size:0.86rem; color:rgba(255,255,255,0.55); line-height:1.85; }
+.ct-links { display:flex; flex-direction:column; gap:0.9rem; }
+.ct-lnk { display:flex; align-items:center; gap:1rem; padding:0.9rem 1.3rem; border:1px solid rgba(255,255,255,0.14); border-radius:var(--r); color:#fff; text-decoration:none; font-size:0.82rem; transition:background 0.2s, border-color 0.2s, transform 0.15s; }
+.ct-lnk:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.25); transform:translateX(4px); }
+.ct-tag { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:rgba(255,255,255,0.35); min-width:3.2rem; }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer { background:#0a0c12; color:rgba(255,255,255,0.3); padding:1.6rem 4rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:0.6rem; letter-spacing:0.08em; }
+
+/* ══════════════════════════════════════════
+   ANIMATIONS & REVEAL
+══════════════════════════════════════════ */
+@keyframes up   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fade { from{opacity:0} to{opacity:1} }
+@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:0.3} }
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+.d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s}
+
+/* ══════════════════════════════════════════
+   HAMBURGER
+══════════════════════════════════════════ */
+.hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; cursor:pointer; padding:4px; background:#fff; border:1px solid var(--rule); border-radius:var(--r); position:fixed; top:1rem; right:1.2rem; z-index:300; }
+.hamburger span { display:block; height:2px; background:var(--ink); border-radius:2px; transition:transform 0.3s, opacity 0.3s; }
+.hamburger span:nth-child(2) { width:70%; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1100px){
+  :root { --sidebar: 240px; }
+  .sec { padding: 4.5rem 3rem; }
+  .hero-l, .hero-r { padding: 4.5rem 3rem; }
+  footer { padding: 1.5rem 3rem; }
+  .fw-cards { grid-template-columns:1fr 1fr; }
+}
+
+@media(max-width:900px){
+  .sidebar { transform:translateX(-100%); transition:transform 0.3s; position:fixed; height:100vh; }
+  .sidebar.open { transform:translateX(0); }
+  .hamburger { display:flex; }
+
+  #hero { grid-template-columns:1fr; }
+  .hero-l { padding:5rem 2rem 2.5rem; }
+  .hero-l::after { display:none; }
+  .hero-r { padding:2.5rem 2rem 4rem; }
+  .stat-grid { gap:1rem; }
+
+  .sec { padding:4rem 2rem; }
+  .exp-grid { grid-template-columns:1fr; gap:1rem; }
+  .proj-cards { grid-template-columns:1fr; }
+  .fw-banner { grid-template-columns:1fr; }
+  .fw-br { border-left:none; border-top:1px solid rgba(255,255,255,0.08); }
+  .fw-maps { grid-template-columns:1fr; }
+  .fw-gh { flex-direction:column; align-items:flex-start; gap:1.2rem; }
+  .think-grid { grid-template-columns:1fr; }
+  .lead-cards { grid-template-columns:1fr; }
+  .impact-strip { grid-template-columns:1fr 1fr; }
+  .contact-inner { grid-template-columns:1fr; gap:2.5rem; }
+  footer { padding:1.3rem 1.5rem; flex-direction:column; gap:0.4rem; text-align:center; }
+}
+
+@media(max-width:600px){
+  h1.name { font-size:2.8rem; }
+  .hero-l, .hero-r { padding:4rem 1.5rem 2.5rem; }
+  .stat-grid { grid-template-columns:1fr 1fr; gap:0.8rem; }
+  .stat-n { font-size:2rem; }
+  .hero-btns { flex-direction:column; align-items:flex-start; gap:0.8rem; }
+  .sec { padding:3.5rem 1.5rem; }
+  .fw-cards { grid-template-columns:1fr; }
+  .fw-bl, .fw-br { padding:2rem 1.5rem; }
+  .fw-gh { padding:1.5rem; }
+  .impact-strip { grid-template-columns:1fr 1fr; }
+  .ic { padding:1.2rem 0.8rem; }
+  .ic-n { font-size:1.8rem; }
+  footer { padding:1.2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-profile">
+    <div class="sb-avatar">M</div>
+    <div class="sb-name">Manisha <span>Takale</span></div>
+    <div class="sb-role">Data Quality &amp; Governance<br>EngD Researcher · JADS</div>
+    <div class="sb-badge">Open to Opportunities</div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section">Main</div>
+    <a href="#hero"       class="sb-link active"><span class="n">00</span>Home</a>
+    <a href="#expertise"  class="sb-link"><span class="n">01</span>Expertise</a>
+    <a href="#projects"   class="sb-link"><span class="n">02</span>Projects</a>
+
+    <div class="sb-section">Deep Dives</div>
+    <a href="#framework"  class="sb-link"><span class="n">03</span>Framework</a>
+    <a href="#approach"   class="sb-link"><span class="n">04</span>Approach</a>
+    <a href="#leadership" class="sb-link"><span class="n">05</span>Leadership</a>
+
+    <div class="sb-section">About</div>
+    <a href="#journey"    class="sb-link"><span class="n">06</span>Journey</a>
+    <a href="#talks"      class="sb-link"><span class="n">07</span>A Talk I Love</a>
+    <a href="#contact"    class="sb-link"><span class="n">08</span>Contact</a>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-socials">
+      <a href="https://linkedin.com/in/manisha-takale-29a17914" target="_blank" class="sb-soc">LinkedIn</a>
+      <a href="https://github.com/mstakale" target="_blank" class="sb-soc">GitHub</a>
+      <a href="manishatakale@gmail.com" class="sb-soc">Email</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ HAMBURGER ══ -->
+<button class="hamburger" id="hamburger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- ① HERO -->
+  <section id="hero">
+    <!-- Left: intro text -->
+    <div class="hero-l">
+      <span class="hero-eyebrow">Data Quality · Governance · Data Science</span>
+      <h1 class="name">Manisha<br><em>Takale</em></h1>
+      <p class="hero-role">Turning data chaos into governed, trusted assets</p>
+      <p class="hero-desc">12+ years at the intersection of software quality engineering and data science. I bring the rigour of enterprise QA thinking to modern data governance — frameworks that hold up in production, not just on paper.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-fill">View Projects</a>
+        <a href="#contact" class="btn-ghost2">Get in Touch →</a>
+      </div>
+    </div>
+
+    <!-- Right: portrait + stats + tags -->
+    <div class="hero-r">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-n">12+</div><div class="stat-l">Years Experience</div></div>
+        <div class="stat-box"><div class="stat-n">5</div><div class="stat-l">Global Clients</div></div>
+        <div class="stat-box"><div class="stat-n">50%</div><div class="stat-l">Test Time Reduced</div></div>
+        <div class="stat-box"><div class="stat-n">10m+</div><div class="stat-l">Data Processed</div></div>
+      </div>
+      <div class="tag-cloud">
+        <span class="htag">DAMA-DMBOK</span>
+        <span class="htag">Privacy-by-Design</span>
+        <span class="htag">Collibra</span>
+        <span class="htag">Federated Learning</span>
+        <span class="htag">Azure</span>
+        <span class="htag">LLM Engineering</span>
+        <span class="htag">EngD · JADS</span>
+        <span class="htag">EU AI Act</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② EXPERTISE -->
+  <section id="expertise" class="sec alt">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">01</span><h2 class="sec-title">Core Expertise</h2><div class="sec-line"></div></div>
+    <div class="exp-grid">
+      <div class="exp-card reveal d1">
+        <span class="exp-n">01 / 03</span>
+        <h3 class="exp-name">Data Quality<br>Engineering</h3>
+        <p class="exp-body">Designing validation frameworks, acceptance criteria, and DQ rules that scale across complex, multi-source environments. Rooted in 7 years of production quality engineering for global telecom systems.</p>
+        <div class="chip-row"><span class="chip">DQ Framework Design</span><span class="chip">Data Profiling</span><span class="chip">Root Cause Analysis</span><span class="chip">SQL · Python</span></div>
+      </div>
+      <div class="exp-card reveal d2">
+        <span class="exp-n">02 / 03</span>
+        <h3 class="exp-name">Data Governance<br>&amp; Strategy</h3>
+        <p class="exp-body">Building governance frameworks from scratch — data ownership models, metadata standards, data contracts, and privacy-compliant architectures aligned with DAMA-DMBOK and GDPR.</p>
+        <div class="chip-row"><span class="chip">DAMA-DMBOK</span><span class="chip">Data Modeling</span><span class="chip">GDPR</span><span class="chip">Collibra</span><span class="chip">Data Contracts</span></div>
+      </div>
+      <div class="exp-card reveal d3">
+        <span class="exp-n">03 / 03</span>
+        <h3 class="exp-name">Applied<br>Data Science</h3>
+        <p class="exp-body">End-to-end ML engineering with a specialisation in LLM applications, federated learning, and synthetic data generation for privacy-sensitive domains.</p>
+        <div class="chip-row"><span class="chip">Machine Learning</span><span class="chip">LLM · GenAI</span><span class="chip">Federated Learning</span><span class="chip">Synthetic Data</span></div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- ③ PROJECTS -->
+  <section id="projects" class="sec">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">02</span><h2 class="sec-title">Featured Projects</h2><div class="sec-line"></div></div>
+    <div class="proj-cards">
+
+      <div class="proj-card reveal">
+        <div class="proj-card-header">
+          <span class="proj-domain">Governance Strategy · Healthcare</span>
+          <h3 class="proj-name">Philips Healthcare</h3>
+          <span class="proj-org">Case Dispatch Automation &amp; Data Governance · 2024 · JADS × Philips</span>
+        </div>
+        <div class="proj-card-body">
+          <p class="p-q">"How do you automate case dispatch in a hospital without patient data ever leaving its source system?"</p>
+          <p class="p-body">Conducted a comprehensive data quality audit of the Philips IMS database, identifying critical gaps, lineage issues, and privacy constraints. Designed a Federated Learning architecture embedding governance controls at the structural level — patient data stays within hospital boundaries by design. Delivered a GDPR-compliant AI automation roadmap accepted by Philips stakeholders.</p>
+          <div class="p-pills"><span class="pill">Privacy-by-Design Architecture</span><span class="pill">DQ Audit Delivered</span><span class="pill">Stakeholder Accepted Roadmap</span></div>
+          <div class="p-tools">Federated Learning · Python · Azure · GDPR Framework</div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal d1">
+        <div class="proj-card-header">
+          <span class="proj-domain">Synthetic Data Quality · Maritime</span>
+          <h3 class="proj-name">MARIT-D</h3>
+          <span class="proj-org">Synthetic AIS Data for Surveillance Testing · 2024 · JADS · Team Lead</span>
+        </div>
+        <div class="proj-card-body">
+          <p class="p-q">"How do you validate anomaly detection algorithms when you can't use real surveillance data?"</p>
+          <p class="p-body">Led the simulation track of a maritime intelligence project. Built a hybrid synthetic AIS data pipeline combining LLM-based trajectory generation (DeepSeek-R1) with rule-based logic. Established scenario-based DQ validation protocols ensuring statistical fidelity — enabling rigorous, privacy-safe algorithm validation.</p>
+          <div class="p-pills"><span class="pill">LLM + Rule-Based Hybrid</span><span class="pill">DQ Validation Protocols</span><span class="pill">Team Lead</span></div>
+          <div class="p-tools">DeepSeek-R1 · Ollama · Python · Pandas · Synthetic Data Design</div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal d2">
+        <div class="proj-card-header">
+          <span class="proj-domain">Data Governance · Active Research</span>
+          <h3 class="proj-name">Maritime Data Platform</h3>
+          <span class="proj-org">Cyber-Physical Governance Research · 2024–Present · JADS (Early Stage)</span>
+        </div>
+        <div class="proj-card-body">
+          <p class="p-q">"How do you govern sensitive sensor data shared across organisations with competing jurisdictions?"</p>
+          <p class="p-body">Early-stage research applying DAMA-DMBOK principles to design data ownership models, quality rules, and cross-organisational data sharing agreements for a multi-stakeholder maritime surveillance context.</p>
+          <div class="p-pills"><span class="pill">DAMA-DMBOK Applied</span><span class="pill">Data Modeling</span><span class="pill">Active Research</span></div>
+          <div class="p-tools">Data Modeling · DAMA-DMBOK · Jira · Python</div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal d3">
+        <div class="proj-card-header">
+          <span class="proj-domain">Data Quality · Enterprise Scale</span>
+          <h3 class="proj-name">Amdocs Global Telecom</h3>
+          <span class="proj-org">Vodafone · AT&amp;T · Sprint · Optus · WL-COM · 2011–2018 · Team Lead</span>
+        </div>
+        <div class="proj-card-body">
+          <p class="p-q">"How do you maintain data integrity across 5 global telecom clients with zero downtime tolerance?"</p>
+          <p class="p-body">7-year foundation in enterprise-scale data quality engineering. Designed comprehensive validation frameworks — quality rules, acceptance criteria, defect classification across multi-client, multi-geography environments. Led root cause analysis and defect lifecycle management: the exact workflow of a Data Quality Manager.</p>
+          <div class="p-pills"><span class="pill">50% Reduction in Test Time</span><span class="pill">7 Days → 24 Hours Deployment</span><span class="pill">5 Global Clients</span></div>
+          <div class="p-tools">SQL · UNIX · Agile · Defect Lifecycle Management</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </section>
+
+  <!-- ④ FRAMEWORK -->
+  <section id="framework" class="sec alt">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">03</span><h2 class="sec-title">Open Source Framework</h2><div class="sec-line"></div></div>
+
+    <div class="fw-banner reveal">
+      <div class="fw-bl">
+        <div class="fw-live">WORKING PROJECT · PYTHON · OPEN SOURCE</div>
+        <h3 class="fw-title">Enterprise Data Quality &amp;<br>AI Governance Control Framework</h3>
+        <p class="fw-sub">A production-ready reference implementation showing how regulated institutions operationalise data ownership, SLA enforcement, incident management, bias monitoring, and drift detection — built on German credit risk data.</p>
+        <div class="fw-badges">
+          <span class="fw-badge">DAMA-DMBOK</span><span class="fw-badge">EU AI Act</span>
+          <span class="fw-badge">DORA</span><span class="fw-badge">Financial Services</span><span class="fw-badge">Model Governance</span>
+        </div>
+      </div>
+      <div class="fw-br">
+        <div class="arch-lbl">System Architecture</div>
+        <div class="arch-flow">
+          <div class="arch-row">
+            <span class="anode">Data Ingestion</span><span class="aarr">→</span>
+            <span class="anode">DQ Rule Engine</span><span class="aarr">→</span>
+            <span class="anode">Incident Store</span>
+          </div>
+          <div class="arch-row" style="padding-left:0.3rem"><span class="aarr">↓</span></div>
+          <div class="arch-row"><span class="anode">Ownership &amp; SLA Router</span></div>
+          <div class="asep">── ML LAYER ────────────────────</div>
+          <div class="arch-row">
+            <span class="anode ml">Training Gate</span><span class="aarr">·</span>
+            <span class="anode ml">Bias Monitor</span><span class="aarr">·</span>
+            <span class="anode ml">Drift (PSI)</span><span class="aarr">·</span>
+            <span class="anode ml">Model Card</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-cards reveal">
+      <div class="fw-card"><span class="fw-ctag">01 · DATA GOVERNANCE</span><h4 class="fw-cname">Ownership &amp; Metadata Registry</h4><p class="fw-cbody">Domain-based accountability model with YAML-as-policy artifacts synced to DuckDB.</p><ul class="fw-clist"><li>Ownership registry (YAML)</li><li>DuckDB metadata sync</li><li>Domain accountability model</li></ul></div>
+      <div class="fw-card"><span class="fw-ctag">02 · DATA QUALITY</span><h4 class="fw-cname">Rule Engine &amp; Incidents</h4><p class="fw-cbody">Completeness and validity rules with severity-based incident generation and SLA breach detection.</p><ul class="fw-clist"><li>Completeness &amp; validity rules</li><li>Severity-based routing</li><li>SLA breach detection</li><li>Evidence tracking</li></ul></div>
+      <div class="fw-card"><span class="fw-ctag">03 · ML QUALITY</span><h4 class="fw-cname">Bias, Drift &amp; Model Registry</h4><p class="fw-cbody">Label integrity gate, demographic bias monitoring, PSI drift detection, auto-generated model cards.</p><ul class="fw-clist"><li>Label integrity gate</li><li>Bias monitoring (age / demographic)</li><li>Feature &amp; prediction drift</li><li>Model card generation</li></ul></div>
+      <div class="fw-card"><span class="fw-ctag">04 · DATASET</span><h4 class="fw-cname">German Credit Risk Data</h4><p class="fw-cbody">Built on the UCI German Credit dataset — real-world financial services data relevant to banking and insurance governance.</p><ul class="fw-clist"><li>1,000 credit applicant records</li><li>20 features incl. demographics</li><li>Binary risk classification</li><li>Financial services context</li></ul></div>
+    </div>
+
+    <div class="fw-maps reveal">
+      <div class="fw-map">
+        <div class="fw-mhd"><div class="fw-mico">DAMA</div><div class="fw-mname">DAMA-DMBOK Alignment</div></div>
+        <table class="fw-tbl"><thead><tr><th>DOMAIN</th><th>IMPLEMENTATION</th></tr></thead><tbody>
+          <tr><td>Data Governance</td><td>Ownership registry with domain accountability model</td></tr>
+          <tr><td>Data Quality</td><td>Rule engine + severity-based incident management</td></tr>
+          <tr><td>Metadata Mgmt</td><td>YAML policy artifacts synced to DuckDB</td></tr>
+          <tr><td>Risk Management</td><td>SLA tracking + automated breach monitoring</td></tr>
+        </tbody></table>
+      </div>
+      <div class="fw-map">
+        <div class="fw-mhd"><div class="fw-mico">EU AI</div><div class="fw-mname">EU AI Act &amp; DORA Alignment</div></div>
+        <table class="fw-tbl"><thead><tr><th>ARTICLE / RULE</th><th>IMPLEMENTATION</th></tr></thead><tbody>
+          <tr><td>Art 9 – Risk Mgmt</td><td>MLQC training gate + escalation routing</td></tr>
+          <tr><td>Art 10 – Data Gov</td><td>Label validation + bias monitoring</td></tr>
+          <tr><td>Art 12 – Records</td><td>Stored artifacts + model registry</td></tr>
+          <tr><td>Art 15 – Monitoring</td><td>PSI-based drift detection pipeline</td></tr>
+          <tr><td>DORA – Resilience</td><td>Operational SLA + incident management</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="fw-gh reveal">
+      <div>
+        <div class="fw-gh-lbl">OPEN SOURCE · GITHUB</div>
+        <div class="fw-gh-repo">enterprise-dq-governance-framework</div>
+        <div class="fw-gh-desc">Python · DuckDB · DAMA-DMBOK · EU AI Act · German Credit Data</div>
+      </div>
+      <a href="https://github.com/manishatakale/enterprise-dq-governance-framework" target="_blank" class="btn-gh">↗ View on GitHub</a>
+    </div>
+    <div class="fw-stack">
+      <span class="fw-slbl">STACK</span>
+      <span class="schip">Python</span><span class="schip">DuckDB</span><span class="schip">Pandas</span>
+      <span class="schip">Scikit-learn</span><span class="schip">YAML</span><span class="schip">PSI Drift</span>
+      <span class="schip">Model Cards</span><span class="schip">SLA Engine</span>
+    </div>
+  </div>
+  </section>
+
+  <!-- ⑤ APPROACH -->
+  <section id="approach" class="sec">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">04</span><h2 class="sec-title">Governance Thinking</h2><div class="sec-line"></div></div>
+    <div class="think-grid reveal">
+      <div class="think-cell"><div class="think-n">1</div><h3 class="think-name">Quality Before Governance</h3><p class="think-body">Governance frameworks fail when the underlying data quality is ignored. My approach always starts with a DQ audit — profiling, lineage mapping, gap analysis — before designing any governance structure. You can't govern what you don't understand.</p></div>
+      <div class="think-cell"><div class="think-n">2</div><h3 class="think-name">Governance by Architecture</h3><p class="think-body">The strongest governance isn't enforced by policy — it's embedded in the architecture. My Philips Federated Learning design is a direct example: privacy compliance wasn't a rule added on top, it was structurally impossible to violate by design.</p></div>
+      <div class="think-cell"><div class="think-n">3</div><h3 class="think-name">Defect Thinking Applied to Data</h3><p class="think-body">7 years of defect lifecycle management in telecom QA maps directly to data quality: classify the issue, trace the root cause, define acceptance criteria, automate the prevention. The vocabulary differs; the thinking is identical.</p></div>
+      <div class="think-cell"><div class="think-n">4</div><h3 class="think-name">Synthetic Data as Quality Proxy</h3><p class="think-body">In privacy-sensitive domains you can't always test against real data. MARIT-D introduced me to synthetic data as a quality validation tool — generating statistically faithful test data to establish DQ acceptance criteria without exposing sensitive information.</p></div>
+    </div>
+    <div class="quote-box reveal">
+      <p>"Good governance is invisible to the people it protects — and unmistakable to the engineers who built it right."</p>
+      <cite>— Manisha Takale · On Privacy-by-Design</cite>
+    </div>
+  </div>
+  </section>
+
+  <!-- ⑥ LEADERSHIP -->
+  <section id="leadership" class="sec alt">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">05</span><h2 class="sec-title">Leadership &amp; Impact</h2><div class="sec-line"></div></div>
+    <div class="lead-cards reveal">
+      <div class="lead-card"><div class="lead-ico">◈</div><h3 class="lead-name">Cross-functional Teams</h3><p class="lead-body">Led 5–6 teams of ~30 participants as Overall Coordinator of JADS' Data Challenge Week — managing delivery, inter-team governance, and stakeholder communication simultaneously.</p></div>
+      <div class="lead-card"><div class="lead-ico">◈</div><h3 class="lead-name">Client Stakeholder Management</h3><p class="lead-body">7 years coordinating across Vodafone, AT&T, Sprint, Optus, and WL-COM — aligning data quality standards with client expectations across multiple time zones and business cultures.</p></div>
+      <div class="lead-card"><div class="lead-ico">◈</div><h3 class="lead-name">End-to-End Data Ownership</h3><p class="lead-body">As sole Data Science Lead at Yopla, owned the entire data lifecycle — ingestion, quality, modeling, deployment, and reporting — building accountability-first data culture from scratch.</p></div>
+    </div>
+    <div class="impact-strip reveal">
+      <div class="ic"><span class="ic-n">71%</span><div class="ic-l">Deployment cycle reduction at Amdocs</div></div>
+      <div class="ic"><span class="ic-n">25%</span><div class="ic-l">Data access efficiency gain at Yopla</div></div>
+      <div class="ic"><span class="ic-n">~30</span><div class="ic-l">Researchers led at JADS Data Challenge Week</div></div>
+      <div class="ic"><span class="ic-n">5</span><div class="ic-l">Global enterprise clients across 4 countries</div></div>
+    </div>
+  </div>
+  </section>
+
+  <!-- ⑦ JOURNEY -->
+  <section id="journey" class="sec">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">06</span><h2 class="sec-title">Career Journey</h2><div class="sec-line"></div></div>
+    <div class="tl reveal">
+      <div class="tl-item"><div class="tl-period">2024 – PRESENT</div><div class="tl-role">EngD Researcher &amp; Data Governance Practitioner</div><div class="tl-org">Jheronimus Academy of Data Science (JADS), Netherlands</div><div class="tl-note">Active research in data governance, synthetic data quality, and privacy-preserving AI. Industry projects with Philips Healthcare and maritime organisations.</div></div>
+      <div class="tl-item"><div class="tl-period">2022 – 2024</div><div class="tl-role">Data Science Lead</div><div class="tl-org">Yopla, Eindhoven (Remote)</div><div class="tl-note">Full end-to-end data ownership at a sustainability startup — built all data infrastructure, quality controls, pipelines, and analytics from scratch.</div></div>
+      <div class="tl-item"><div class="tl-period">2021 – 2022</div><div class="tl-role">Data Scientist</div><div class="tl-org">Aestivalis, Amsterdam (Remote)</div><div class="tl-note">Real-time financial data validation and predictive modelling using LSTM-RNN architectures on live market data.</div></div>
+      <div class="tl-item"><div class="tl-period">2019 – 2020</div><div class="tl-role">MSc — Data Science and Society</div><div class="tl-org">Tilburg University</div><div class="tl-note">Transition from quality engineering to data science — bridging technical foundations with statistical and machine learning methodology.</div></div>
+      <div class="tl-item"><div class="tl-period">2011 – 2018</div><div class="tl-role">Advanced Test Engineer &amp; Team Lead</div><div class="tl-org">Amdocs India Pvt. Ltd., Pune</div><div class="tl-note">7 years building the quality engineering foundation that now underpins all governance thinking. Enterprise-scale validation for Vodafone, AT&T, Sprint, Optus, and WL-COM.</div></div>
+    </div>
+  </div>
+  </section>
+
+  <!-- ⑧ TALKS -->
+  <section id="talks" class="sec alt">
+  <div class="sec-inner">
+    <div class="sec-hd reveal"><span class="sec-num">07</span><h2 class="sec-title">A Talk I Love</h2><div class="sec-line"></div></div>
+    <div style="display:flex; justify-content:center;" class="reveal">
+      <iframe src="https://embed.ted.com/talks/sarah_kay_if_i_should_have_a_daughter" width="760" height="428" frameborder="0" scrolling="no" allowfullscreen style="max-width:100%; border-radius:var(--r);"></iframe>
+    </div>
+  </div>
+  </section>
+
+  <!-- ⑨ CONTACT -->
+  <section id="contact" class="sec dark">
+  <div class="sec-inner">
+    <div class="sec-hd reveal">
+      <span class="sec-num inv">08</span>
+      <h2 class="sec-title inv">Let's Connect</h2>
+      <div class="sec-line inv"></div>
+    </div>
+    <div class="contact-inner">
+      <div class="reveal">
+        <div class="avail">OPEN TO NEW OPPORTUNITIES</div>
+        <p class="ct-tagline">"Looking for organisations where data quality is a strategic priority, not an afterthought."</p>
+        <p class="ct-copy">Based in the Netherlands. Available for Data Quality Lead, Data Governance Manager, and Senior Data Scientist roles across NL, DE, and AT. Open to hybrid and remote arrangements.</p>
+      </div>
+      <div class="ct-links reveal d1">
+        <a class="ct-lnk" href="mailto:manishatakale@gmail.com"><span class="ct-tag">EMAIL</span>manishatakale@gmail.com</a>
+        <a class="ct-lnk" href="https://linkedin.com/in/manisha-takale-29a17914" target="_blank"><span class="ct-tag">LINKEDIN</span>linkedin.com/in/manisha-takale-29a17914</a>
+        <a class="ct-lnk" href="https://github.com/mstakale" target="_blank"><span class="ct-tag">GITHUB</span>github.com/mstakale</a>
+        <a class="ct-lnk" href="#"><span class="ct-tag">CV</span>Download Full CV (PDF)</a>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Manisha Takale</span>
+    <span>Data Quality &amp; Governance · Netherlands</span>
+    <span>JADS EngD Candidate</span>
+  </footer>
+
+</main>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('vis'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Active sidebar link
+const sections = document.querySelectorAll('section[id]');
+const sbLinks  = document.querySelectorAll('.sb-link');
+const sObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sbLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => sObs.observe(s));
+
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const sidebar   = document.getElementById('sidebar');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  sidebar.classList.toggle('open');
+});
+sbLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    sidebar.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
